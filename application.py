@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,send_file
+from flask import Flask,render_template,request,send_file,make_response
 import boto3
 from botocore.exceptions import ClientError
 import logging
@@ -9,7 +9,7 @@ S3_BUCKET = 'test1-show-in-web'
 
 application=Flask(__name__)
 
-@application.route('/')
+@application.route('/',methods=['POST','GET'])
 def index():
     try:
         objects = s3.list_objects(Bucket=S3_BUCKET)['Contents']
