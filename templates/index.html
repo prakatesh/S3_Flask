@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>s3</title>
+    <style>
+        #textBox {
+            display: none;
+        }
+        input{
+            margin-bottom: 1%;
+        }
+    </style>
+    <script>
+        function openTextBox(key) {
+            alert(key)
+            var textBox = document.getElementById("textBox");
+            if (textBox.style.display === "block") 
+            {
+                textBox.style.display = "none"
+            }    
+            else {
+                textBox.style.display = "block"
+                document.getElementById('old').value=key
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Upload in s3</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" id="">
+        <input type="text" name="saveas" id="">
+        <button>Upload</button>
+    </form>
+    <div id="textBox">
+        <form action="/rename" method="post">
+            <label for="textInput">Rename:</label><br>
+            <label for="">old_name:</label>
+            <input type="text" id="old" name="old_name" ><br>    
+            <label for="">new_name:</label>
+            <input type="text" name="new_name">
+            <input type="submit"  >
+        </form>
+    </div>
+    <ul>
+    {% for obj in objects %}
+    <li><a href="{{ url_for('view_object', key=obj['Key']) }}">{{obj['Key']}}</a><button id="openButton" onclick="openTextBox('{{ obj['Key']}}')">Rename</button> <a href="{{url_for('delete',key=obj['Key'])}}">Delete</a></li>
+    {% endfor %}
+    
+</ul>
+</body>
+</html>
